@@ -1,0 +1,9 @@
+{
+  "workflow": {
+    "mode": "manual"
+  },
+  "project": {
+    "name": "Citizen Grievance System",
+    "stack": "Modern Web Stack"
+  }
+}

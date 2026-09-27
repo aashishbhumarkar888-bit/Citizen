@@ -1,0 +1,227 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum RoleType {
+  CITIZEN
+  OPERATOR
+  DEPARTMENT_OFFICER
+  SUPERVISOR
+  ADMIN
+}
+
+enum GrievanceStatus {
+  SUBMITTED
+  ACKNOWLEDGED
+  ASSIGNED
+  IN_PROGRESS
+  RESOLUTION_SUBMITTED
+  CITIZEN_VERIFICATION
+  CLOSED
+  REJECTED
+  REOPENED
+  ESCALATED
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  name          String?
+  role          RoleType  @default(CITIZEN)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  grievancesSubmitted Grievance[]           @relation("CitizenGrievances")
+  grievancesAssigned  GrievanceAssignment[]
+  comments            Comment[]
+  auditLogs           AuditLog[]
+  notifications       Notification[]
+  resolutions         Resolution[]
+}
+
+model Department {
+  id          String      @id @default(uuid())
+  name        String      @unique
+  description String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  
+  grievances  Grievance[]
+  slas        SLA[]
+}
+
+model Ward {
+  id          String      @id @default(uuid())
+  name        String      @unique
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  
+  grievances  Grievance[]
+}
+
+model GrievanceCategory {
+  id          String      @id @default(uuid())
+  name        String      @unique
+  description String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  grievances  Grievance[]
+  slas        SLA[]
+}
+
+model Grievance {
+  id          String          @id @default(uuid())
+  title       String
+  description String
+  location    String
+  status      GrievanceStatus @default(SUBMITTED)
+  
+  citizenId   String
+  citizen     User            @relation("CitizenGrievances", fields: [citizenId], references: [id])
+  
+  categoryId  String
+  category    GrievanceCategory @relation(fields: [categoryId], references: [id])
+  
+  departmentId String?
+  department   Department?      @relation(fields: [departmentId], references: [id])
+
+  wardId      String?
+  ward        Ward?           @relation(fields: [wardId], references: [id])
+
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  history     GrievanceStatusHistory[]
+  assignments GrievanceAssignment[]
+  comments    Comment[]
+  attachments Attachment[]
+  resolutions Resolution[]
+  escalations Escalation[]
+  aiAnalysis  AIAnalysis?
+}
+
+model GrievanceStatusHistory {
+  id          String          @id @default(uuid())
+  status      GrievanceStatus
+  notes       String?
+  
+  grievanceId String
+  grievance   Grievance       @relation(fields: [grievanceId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime        @default(now())
+}
+
+model GrievanceAssignment {
+  id          String    @id @default(uuid())
+  
+  grievanceId String
+  grievance   Grievance @relation(fields: [grievanceId], references: [id], onDelete: Cascade)
+  
+  officerId   String
+  officer     User      @relation(fields: [officerId], references: [id])
+  
+  assignedAt  DateTime  @default(now())
+}
+
+model Comment {
+  id          String    @id @default(uuid())
+  content     String
+  isInternal  Boolean   @default(false)
+  
+  grievanceId String
+  grievance   Grievance @relation(fields: [grievanceId], references: [id], onDelete: Cascade)
+  
+  authorId    String
+  author      User      @relation(fields: [authorId], references: [id])
+  
+  createdAt   DateTime  @default(now())
+}
+
+model Attachment {
+  id          String    @id @default(uuid())
+  fileUrl     String
+  fileName    String
+  fileType    String
+  
+  grievanceId String
+  grievance   Grievance @relation(fields: [grievanceId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime  @default(now())
+}
+
+model Resolution {
+  id          String    @id @default(uuid())
+  notes       String
+  
+  grievanceId String
+  grievance   Grievance @relation(fields: [grievanceId], references: [id], onDelete: Cascade)
+  
+  resolvedById String
+  resolvedBy   User     @relation(fields: [resolvedById], references: [id])
+  
+  createdAt   DateTime  @default(now())
+}
+
+model Notification {
+  id          String    @id @default(uuid())
+  type        String
+  content     String
+  read        Boolean   @default(false)
+  
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime  @default(now())
+}
+
+model AuditLog {
+  id          String    @id @default(uuid())
+  action      String
+  entityType  String
+  entityId    String
+  metadata    String?   // Stored as JSON string
+  
+  actorId     String?
+  actor       User?     @relation(fields: [actorId], references: [id])
+  
+  createdAt   DateTime  @default(now())
+}
+
+model SLA {
+  id            String    @id @default(uuid())
+  durationHours Int
+  
+  categoryId    String?
+  category      GrievanceCategory? @relation(fields: [categoryId], references: [id])
+  
+  departmentId  String?
+  department    Department?        @relation(fields: [departmentId], references: [id])
+}
+
+model Escalation {
+  id          String    @id @default(uuid())
+  reason      String
+  
+  grievanceId String
+  grievance   Grievance @relation(fields: [grievanceId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime  @default(now())
+}
+
+model AIAnalysis {
+  id                    String    @id @default(uuid())
+  suggestedCategory     String?
+  suggestedDepartmentId String?
+  confidenceScore       Float
+  
+  grievanceId           String    @unique
+  grievance             Grievance @relation(fields: [grievanceId], references: [id], onDelete: Cascade)
+  
+  createdAt             DateTime  @default(now())
+}

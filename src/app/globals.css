@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #f8fafc; /* Slate 50 */
+    --foreground: #0f172a; /* Slate 900 */
+    --primary: #3b82f6; /* Blue 500 */
+    --primary-foreground: #ffffff;
+    --accent: #10b981; /* Emerald 500 */
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --background: #020617; /* Slate 950 */
+      --foreground: #f8fafc; /* Slate 50 */
+      --primary: #3b82f6;
+      --primary-foreground: #ffffff;
+      --accent: #10b981;
+    }
+  }
+
+  body {
+    @apply bg-[var(--background)] text-[var(--foreground)] antialiased transition-colors duration-300;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/10 dark:bg-black/20 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-xl;
+  }
+}
