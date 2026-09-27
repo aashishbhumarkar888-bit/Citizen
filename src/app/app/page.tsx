@@ -1,61 +1,59 @@
 import Link from 'next/link';
-import { Mic, FileText, CheckCircle2, Search, Upload, Info } from 'lucide-react';
+import { Mic, Search, FileText, Briefcase, Stethoscope, Tractor, Map, AlertTriangle, Landmark, ChevronRight } from 'lucide-react';
 
-export default function AppHome() {
+export default function CitizenHome() {
   return (
-    <main className="max-w-4xl mx-auto px-4 py-8">
-      <section className="text-center mb-12">
-        <h1 className="text-3xl md:text-5xl font-extrabold text-[#0F172A] mb-4">What do you need help with?</h1>
-        <p className="text-lg text-[#0F172A]/70 mb-8 max-w-xl mx-auto">Tell us in your own words. SevaSetu will guide you to the right public service.</p>
-        
-        <Link href="/app/ask" className="inline-flex flex-col items-center justify-center w-32 h-32 md:w-40 md:h-40 rounded-full bg-white shadow-xl border-4 border-[#FAFAF9] text-[#F97316] hover:scale-105 hover:shadow-2xl transition-all duration-300 group">
-          <div className="relative">
-             <Mic className="w-12 h-12 md:w-16 md:h-16 group-hover:animate-pulse" />
-             <div className="absolute inset-0 bg-[#F97316]/20 rounded-full blur-xl scale-150 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-          </div>
-          <span className="font-bold mt-2 text-[#0F172A]">Tap to Speak</span>
-        </Link>
-        <div className="flex items-center justify-center gap-4 mt-6 text-sm font-medium text-[#0F172A]/60">
-          <Link href="/app/ask" className="hover:text-[#F97316] px-4 py-2 rounded-full border border-[#0F172A]/10 bg-white">Type</Link>
-          <Link href="/app/documents/upload" className="hover:text-[#F97316] px-4 py-2 rounded-full border border-[#0F172A]/10 bg-white">Upload a document</Link>
-        </div>
-      </section>
+    <div className="max-w-4xl mx-auto px-4 py-12">
+      <div className="text-center mb-12">
+        <h1 className="text-4xl md:text-5xl font-extrabold text-[#0F172A] mb-4">What do you need help with today?</h1>
+        <p className="text-xl text-[#0F172A]/60 font-medium">Describe your problem in your own words.</p>
+      </div>
 
-      <section className="mb-12">
-        <h2 className="text-sm font-bold text-[#0F172A]/50 tracking-wider uppercase mb-4">Continue Where You Left Off</h2>
-        <Link href="/app/applications/DEMO-123" className="block bg-white rounded-2xl p-5 border border-[#0F172A]/10 shadow-sm hover:border-[#F97316]/50 transition-colors">
-          <div className="flex justify-between items-start mb-4">
-            <div>
-              <h3 className="font-bold text-[#0F172A] text-lg">Post-Matric Scholarship</h3>
-              <p className="text-sm text-[#0F172A]/60">Application preparation</p>
-            </div>
-            <span className="px-2 py-1 bg-blue-50 text-blue-700 text-xs font-bold rounded-lg">Draft</span>
-          </div>
-          <div className="w-full bg-[#FAFAF9] h-2 rounded-full overflow-hidden">
-            <div className="bg-[#F97316] h-full" style={{ width: '80%' }}></div>
-          </div>
-          <p className="text-xs text-[#0F172A]/50 mt-2 text-right">4 of 5 steps complete</p>
+      <div className="bg-white rounded-[2rem] p-4 shadow-xl border border-[#0F172A]/10 max-w-3xl mx-auto flex items-center gap-4 mb-16 relative hover:border-[#F97316] transition-colors group">
+        <div className="absolute -inset-1 bg-gradient-to-r from-orange-400 to-orange-600 rounded-[2.2rem] blur opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
+        <Link href="/app/ask" className="w-16 h-16 rounded-2xl bg-orange-50 text-[#F97316] flex items-center justify-center shrink-0 hover:bg-orange-100 transition-colors relative z-10">
+          <Mic className="w-8 h-8" />
         </Link>
-      </section>
+        <Link href="/app/ask" className="flex-1 px-4 py-4 text-xl text-[#0F172A]/40 font-medium relative z-10 cursor-text">
+          🎙 Speak, ⌨ Type, or 📷 Upload...
+        </Link>
+        <Link href="/app/ask" className="w-16 h-16 rounded-2xl bg-[#0F172A] text-white flex items-center justify-center shrink-0 hover:bg-[#0F172A]/80 transition-colors shadow-md relative z-10">
+          <Search className="w-7 h-7" />
+        </Link>
+      </div>
 
-      <section className="mb-12">
-        <h2 className="text-sm font-bold text-[#0F172A]/50 tracking-wider uppercase mb-4">Quick Help</h2>
+      <div>
+        <h2 className="text-sm font-bold text-[#0F172A]/40 uppercase tracking-widest mb-6">Quick Needs</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { icon: Search, label: 'Find a Service', href: '/app/services', color: 'text-blue-600', bg: 'bg-blue-50' },
-            { icon: CheckCircle2, label: 'Check Eligibility', href: '/app/eligibility', color: 'text-green-600', bg: 'bg-green-50' },
-            { icon: Upload, label: 'Upload Documents', href: '/app/documents', color: 'text-purple-600', bg: 'bg-purple-50' },
-            { icon: Info, label: 'Track Application', href: '/app/applications', color: 'text-orange-600', bg: 'bg-orange-50' }
-          ].map(item => (
-            <Link key={item.label} href={item.href} className="flex flex-col items-center text-center p-4 bg-white rounded-2xl border border-[#0F172A]/5 hover:shadow-md transition-shadow">
-              <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 ${item.bg} ${item.color}`}>
-                <item.icon className="w-6 h-6" />
+            { icon: FileText, label: "Scholarship", color: "text-blue-600", bg: "bg-blue-50", link: "/app/ask?scenario=scholarship" },
+            { icon: Tractor, label: "Farmer Support", color: "text-green-600", bg: "bg-green-50", link: "/app/ask?scenario=crop" },
+            { icon: AlertTriangle, label: "Report Problem", color: "text-red-600", bg: "bg-red-50", link: "/app/ask?scenario=grievance" },
+            { icon: Briefcase, label: "Jobs", color: "text-purple-600", bg: "bg-purple-50", link: "/app/ask" },
+            { icon: Stethoscope, label: "Health", color: "text-teal-600", bg: "bg-teal-50", link: "/app/ask" },
+            { icon: Landmark, label: "Gov Schemes", color: "text-orange-600", bg: "bg-orange-50", link: "/app/ask" },
+            { icon: Map, label: "Transport", color: "text-indigo-600", bg: "bg-indigo-50", link: "/app/ask" },
+            { icon: Search, label: "Browse All", color: "text-gray-600", bg: "bg-gray-100", link: "/app/ask" },
+          ].map((item, i) => (
+            <Link key={i} href={item.link} className="bg-white p-6 rounded-3xl border border-[#0F172A]/5 hover:shadow-lg hover:border-[#0F172A]/10 transition-all flex flex-col items-center justify-center text-center gap-4 group cursor-pointer">
+              <div className={`w-14 h-14 rounded-2xl ${item.bg} ${item.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                <item.icon className="w-7 h-7" />
               </div>
-              <span className="text-sm font-medium text-[#0F172A]">{item.label}</span>
+              <span className="font-bold text-[#0F172A]">{item.label}</span>
             </Link>
           ))}
         </div>
-      </section>
-    </main>
+      </div>
+      
+      <div className="mt-16 bg-[#0F172A] rounded-3xl p-8 flex flex-col md:flex-row items-center justify-between text-white gap-6">
+        <div>
+          <h3 className="text-xl font-bold mb-2">Track your active requests</h3>
+          <p className="text-white/60 font-medium">Check the status of your applications and grievances.</p>
+        </div>
+        <Link href="/app/applications" className="px-6 py-3 bg-white text-[#0F172A] font-bold rounded-full flex items-center gap-2 hover:bg-gray-100 transition-colors w-full md:w-auto justify-center">
+          View Dashboard <ChevronRight className="w-5 h-5" />
+        </Link>
+      </div>
+    </div>
   );
 }

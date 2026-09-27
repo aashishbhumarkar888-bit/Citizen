@@ -1,5 +1,5 @@
 "use client";
-import { motion } from 'framer-motion';
+
 import SevaSetuFlow from '@/components/SevaSetuFlow';
 import { CheckCircle2, FileText, ArrowRight } from 'lucide-react';
 import Link from 'next/link';

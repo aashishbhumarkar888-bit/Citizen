@@ -3,7 +3,7 @@ import { Mic, Upload, Search, ChevronRight, FileText, ArrowRight } from "lucide-
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-[#FAFAF9]">
       {/* Navigation */}
       <header className="flex items-center justify-between px-8 py-6 max-w-7xl mx-auto w-full">
         <div className="flex items-center gap-2">
@@ -13,12 +13,10 @@ export default function Home() {
           <span className="font-bold text-xl tracking-tight text-[#0F172A]">SEVASETU AI</span>
         </div>
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-[#0F172A]/80">
-          <Link href="/demo" className="hover:text-[#F97316] transition-colors">How it Works</Link>
-          <Link href="/services" className="hover:text-[#F97316] transition-colors">Services</Link>
-          <Link href="/judge" className="hover:text-[#F97316] transition-colors">For Judges</Link>
+          <Link href="/judge" className="hover:text-[#F97316] transition-colors">Judge Portal</Link>
+          <Link href="/architecture" className="hover:text-[#F97316] transition-colors">Architecture</Link>
         </nav>
         <div className="flex items-center gap-4">
-          <Link href="/demo" className="text-sm font-medium hover:text-[#F97316]">Demo Mode</Link>
           <Link href="/app" className="bg-[#0F172A] text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-[#0F172A]/90 transition-all shadow-sm">
             Try SevaSetu
           </Link>
@@ -35,22 +33,22 @@ export default function Home() {
           Challenge 5: AI Innovation for Public Services
         </div>
 
-        <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-[#0F172A] mb-8 leading-[1.1]">
-          Public services, <br />
-          <span className="text-[#F97316]">explained and guided by AI.</span>
+        <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-[#0F172A] mb-8 leading-[1.1] uppercase">
+          Public services <br />
+          <span className="text-[#F97316]">start with a question.</span>
         </h1>
         
-        <p className="text-lg md:text-xl text-[#0F172A]/70 mb-12 max-w-2xl leading-relaxed">
-          Speak your need. Understand your options. Prepare what you need. Track what happens next. The first citizen-centric AI navigator for Madhya Pradesh.
+        <p className="text-lg md:text-2xl text-[#0F172A]/70 mb-12 max-w-3xl leading-relaxed font-medium">
+          SevaSetu AI turns a citizen&apos;s everyday request into a guided public-service journey.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center gap-4 w-full justify-center">
-          <Link href="/app" className="w-full sm:w-auto bg-[#F97316] text-white px-8 py-4 rounded-full text-base font-semibold hover:bg-[#ea580c] transition-all shadow-md flex items-center justify-center gap-2">
-            Start with your need
-            <ArrowRight className="w-4 h-4" />
+          <Link href="/app/ask" className="w-full sm:w-auto bg-[#F97316] text-white px-8 py-4 rounded-full text-base font-bold hover:bg-[#ea580c] transition-all shadow-md flex items-center justify-center gap-2">
+            START WITH YOUR NEED
+            <ArrowRight className="w-5 h-5" />
           </Link>
-          <Link href="/demo" className="w-full sm:w-auto bg-white border border-[#0F172A]/10 text-[#0F172A] px-8 py-4 rounded-full text-base font-semibold hover:bg-gray-50 transition-all shadow-sm flex items-center justify-center gap-2">
-            See how it works
+          <Link href="/judge" className="w-full sm:w-auto bg-white border border-[#0F172A]/10 text-[#0F172A] px-8 py-4 rounded-full text-base font-bold hover:bg-gray-50 transition-all shadow-sm flex items-center justify-center gap-2">
+            WATCH HOW IT WORKS
           </Link>
         </div>
 
@@ -68,8 +66,7 @@ export default function Home() {
               <div className="w-16 h-16 rounded-2xl bg-orange-100 text-orange-600 flex items-center justify-center shadow-inner">
                 <Mic className="w-8 h-8" />
               </div>
-              <p className="font-semibold text-[#0F172A]">1. Ask</p>
-              <p className="text-xs text-center text-[#0F172A]/60">Speak or type your need in simple terms.</p>
+              <p className="font-bold text-[#0F172A]">1. Ask</p>
             </div>
 
             <ChevronRight className="hidden md:block text-[#0F172A]/20 w-8 h-8 flex-shrink-0" />
@@ -78,8 +75,7 @@ export default function Home() {
               <div className="w-16 h-16 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center shadow-inner">
                 <Search className="w-8 h-8" />
               </div>
-              <p className="font-semibold text-[#0F172A]">2. Understand</p>
-              <p className="text-xs text-center text-[#0F172A]/60">AI finds the right service and checks eligibility.</p>
+              <p className="font-bold text-[#0F172A]">2. Understand</p>
             </div>
 
             <ChevronRight className="hidden md:block text-[#0F172A]/20 w-8 h-8 flex-shrink-0" />
@@ -88,8 +84,7 @@ export default function Home() {
               <div className="w-16 h-16 rounded-2xl bg-green-100 text-green-600 flex items-center justify-center shadow-inner">
                 <Upload className="w-8 h-8" />
               </div>
-              <p className="font-semibold text-[#0F172A]">3. Prepare</p>
-              <p className="text-xs text-center text-[#0F172A]/60">Upload documents for AI extraction and verification.</p>
+              <p className="font-bold text-[#0F172A]">3. Prepare</p>
             </div>
 
             <ChevronRight className="hidden md:block text-[#0F172A]/20 w-8 h-8 flex-shrink-0" />
@@ -98,8 +93,7 @@ export default function Home() {
               <div className="w-16 h-16 rounded-2xl bg-purple-100 text-purple-600 flex items-center justify-center shadow-inner">
                 <FileText className="w-8 h-8" />
               </div>
-              <p className="font-semibold text-[#0F172A]">4. Apply & Track</p>
-              <p className="text-xs text-center text-[#0F172A]/60">Submit seamlessly and track every step.</p>
+              <p className="font-bold text-[#0F172A]">4. Apply & Track</p>
             </div>
           </div>
         </div>

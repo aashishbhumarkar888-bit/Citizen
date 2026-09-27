@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mic, Send, Camera, MapPin, AlertTriangle } from 'lucide-react';
+import { Camera, MapPin, AlertTriangle } from 'lucide-react';
 import SevaSetuFlow from '@/components/SevaSetuFlow';
 
 export default function NewGrievancePage() {
@@ -73,20 +73,21 @@ export default function NewGrievancePage() {
             
             <div className="space-y-4 mb-8">
               <div className="bg-[#FAFAF9] p-4 rounded-xl border border-[#0F172A]/5">
-                <p className="text-sm font-bold text-[#0F172A]/40 uppercase tracking-wider mb-1">Issue Category</p>
-                <p className="font-bold text-[#0F172A]">Urban Infrastructure</p>
+                <p className="text-xs font-bold text-[#F97316] uppercase tracking-wider mb-3 bg-orange-50 inline-block px-3 py-1 rounded-full">AI-Generated Grievance Draft</p>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center"><span className="text-sm font-bold text-[#0F172A]/50">Category</span><span className="font-bold">Road Infrastructure</span></div>
+                  <div className="flex justify-between items-center"><span className="text-sm font-bold text-[#0F172A]/50">Issue</span><span className="font-bold">Pothole / damaged road</span></div>
+                  <div className="flex justify-between items-center"><span className="text-sm font-bold text-[#0F172A]/50">Location</span><span className="font-bold">Main Market Sq, Bhopal (Detected)</span></div>
+                  <div className="flex justify-between items-center"><span className="text-sm font-bold text-[#0F172A]/50">Evidence</span><span className="font-bold text-green-600 flex items-center gap-1">✓ Photo attached</span></div>
+                </div>
               </div>
               <div className="bg-[#FAFAF9] p-4 rounded-xl border border-[#0F172A]/5">
-                <p className="text-sm font-bold text-[#0F172A]/40 uppercase tracking-wider mb-1">Suggested Department</p>
-                <p className="font-bold text-[#0F172A]">Municipal Corporation (PWD)</p>
-              </div>
-              <div className="bg-[#FAFAF9] p-4 rounded-xl border border-[#0F172A]/5">
-                <p className="text-sm font-bold text-[#0F172A]/40 uppercase tracking-wider mb-1">Your Description</p>
+                <p className="text-sm font-bold text-[#0F172A]/40 uppercase tracking-wider mb-1">Original Description</p>
                 <p className="text-[#0F172A]">{input}</p>
               </div>
             </div>
 
-            <button onClick={() => router.push('/app/applications/DEMO-123/success')} className="w-full py-4 bg-[#F97316] text-white font-bold rounded-2xl hover:bg-orange-600 transition-colors shadow-md">
+            <button onClick={() => router.push('/app/applications/DEMO-123/success?type=grievance')} className="w-full py-4 bg-[#F97316] text-white font-bold rounded-2xl hover:bg-orange-600 transition-colors shadow-md">
               Submit Grievance
             </button>
           </motion.div>

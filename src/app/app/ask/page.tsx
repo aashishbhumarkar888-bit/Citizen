@@ -1,16 +1,32 @@
 "use client";
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Mic, Send, Search } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { processCitizenIntent } from '@/lib/ai-engine';
 import SevaSetuFlow from '@/components/SevaSetuFlow';
 
-export default function AskPage() {
+function AskContent() {
   const [input, setInput] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<{
+    intent: string;
+    category: string;
+    service: string;
+    nextStep: string;
+    confidence: number;
+    requiredDocuments: string[];
+  } | null>(null);
+  
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const scenario = searchParams.get('scenario');
+
+  useEffect(() => {
+    if (scenario === 'scholarship') setInput("I need help applying for a scholarship.");
+    if (scenario === 'crop') setInput("My crop was damaged by heavy rain.");
+    if (scenario === 'grievance') setInput("There is a pothole on my road.");
+  }, [scenario]);
 
   const handleProcess = async () => {
     if (!input.trim()) return;
@@ -43,11 +59,12 @@ export default function AskPage() {
       <AnimatePresence mode="wait">
         {!result && !isProcessing && (
           <motion.div key="input" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
-            <h1 className="text-3xl font-bold text-[#0F172A] text-center mb-8">What do you need?</h1>
+            <h1 className="text-4xl font-extrabold text-[#0F172A] text-center mb-8">What do you need?</h1>
             
-            <div className="bg-white rounded-3xl p-2 shadow-lg border border-[#0F172A]/10 flex items-center mb-8 relative">
-              <button className="w-12 h-12 rounded-full bg-orange-50 text-[#F97316] flex items-center justify-center hover:bg-orange-100 transition-colors shrink-0">
-                <Mic className="w-5 h-5" />
+            <div className="bg-white rounded-[2rem] p-3 shadow-xl border border-[#0F172A]/10 flex items-center mb-8 relative">
+              <button className="w-14 h-14 rounded-full bg-orange-50 text-[#F97316] flex items-center justify-center hover:bg-orange-100 transition-colors shrink-0 relative overflow-hidden group">
+                <div className="absolute inset-0 bg-[#F97316]/20 animate-pulse rounded-full opacity-0 group-hover:opacity-100"></div>
+                <Mic className="w-6 h-6 z-10" />
               </button>
               <input 
                 type="text" 
@@ -55,23 +72,23 @@ export default function AskPage() {
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && handleProcess()}
                 placeholder="Type your need here..."
-                className="flex-1 bg-transparent px-4 py-3 outline-none text-[#0F172A] placeholder:text-[#0F172A]/30 text-lg"
+                className="flex-1 bg-transparent px-6 py-4 outline-none text-[#0F172A] placeholder:text-[#0F172A]/30 text-xl font-medium"
               />
               <button 
                 onClick={handleProcess}
                 disabled={!input.trim()}
-                className="w-12 h-12 rounded-full bg-[#0F172A] text-white flex items-center justify-center disabled:opacity-50 hover:bg-[#0F172A]/80 transition-colors shrink-0"
+                className="w-14 h-14 rounded-full bg-[#0F172A] text-white flex items-center justify-center disabled:opacity-50 hover:bg-[#0F172A]/80 transition-colors shrink-0"
               >
-                <Send className="w-5 h-5 ml-1" />
+                <Send className="w-6 h-6 ml-1" />
               </button>
             </div>
 
             <div className="flex flex-wrap justify-center gap-3">
-              {["I want to apply for a scholarship.", "My crop was damaged by rain.", "I want to report a damaged road."].map(suggestion => (
+              {["I want to apply for a scholarship.", "My crop was damaged by heavy rain.", "There is a pothole on my road."].map(suggestion => (
                 <button 
                   key={suggestion}
                   onClick={() => { setInput(suggestion); }}
-                  className="px-4 py-2 rounded-full bg-white border border-[#0F172A]/10 text-sm font-medium text-[#0F172A]/70 hover:border-[#F97316] hover:text-[#F97316] transition-colors"
+                  className="px-5 py-3 rounded-full bg-white border border-[#0F172A]/10 text-sm font-bold text-[#0F172A]/70 hover:border-[#F97316] hover:text-[#F97316] hover:shadow-md transition-all"
                 >
                   {suggestion}
                 </button>
@@ -93,8 +110,8 @@ export default function AskPage() {
                 <Search className="w-8 h-8 text-[#F97316]" />
               </div>
             </div>
-            <h2 className="text-xl font-bold text-[#0F172A]">Understanding your request...</h2>
-            <p className="text-[#0F172A]/50 mt-2">AI is finding the right service</p>
+            <h2 className="text-2xl font-bold text-[#0F172A]">Understanding your request...</h2>
+            <p className="text-[#0F172A]/50 mt-2 font-medium">AI is finding the right service</p>
           </motion.div>
         )}
 
@@ -102,26 +119,26 @@ export default function AskPage() {
           <motion.div key="result" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-3xl p-8 shadow-xl border border-[#0F172A]/5 relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-green-50 rounded-bl-full -z-10 opacity-50"></div>
             
-            <p className="text-sm font-bold text-[#0F172A]/40 tracking-wider mb-2 uppercase">You Said</p>
-            <p className="text-xl font-medium text-[#0F172A] mb-8 pb-8 border-b border-[#0F172A]/5">"{input}"</p>
+            <p className="text-xs font-bold text-[#0F172A]/40 tracking-widest mb-2 uppercase">You Said</p>
+            <p className="text-2xl font-bold text-[#0F172A] mb-8 pb-8 border-b border-[#0F172A]/5">&quot;{input}&quot;</p>
 
-            <div className="flex items-center gap-2 mb-6">
+            <div className="flex items-center gap-3 mb-6">
               <span className="w-2 h-2 rounded-full bg-[#15803D] animate-pulse"></span>
-              <p className="text-sm font-bold text-[#15803D] tracking-wider uppercase">AI Understood</p>
+              <p className="text-sm font-bold text-[#15803D] tracking-widest uppercase">AI Understood</p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-8 mb-8">
               <div>
-                <p className="text-sm text-[#0F172A]/50 mb-1">Service Identified</p>
-                <p className="text-xl font-bold text-[#0F172A]">{result.service}</p>
-                <span className="inline-block mt-2 px-3 py-1 bg-blue-50 text-blue-700 rounded-lg text-xs font-bold">{result.category}</span>
+                <p className="text-sm font-medium text-[#0F172A]/50 mb-1">Service Identified</p>
+                <p className="text-2xl font-extrabold text-[#0F172A]">{result.service}</p>
+                <span className="inline-block mt-3 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-lg text-xs font-bold uppercase tracking-wider">{result.category}</span>
               </div>
               <div>
-                <p className="text-sm text-[#0F172A]/50 mb-2">You may need</p>
-                <ul className="space-y-2">
+                <p className="text-sm font-medium text-[#0F172A]/50 mb-3">You will need</p>
+                <ul className="space-y-3">
                   {result.requiredDocuments.map((doc: string) => (
-                    <li key={doc} className="flex items-center gap-2 text-sm font-medium text-[#0F172A]/80">
-                      <div className="w-1.5 h-1.5 rounded-full bg-[#F97316]"></div>
+                    <li key={doc} className="flex items-center gap-3 text-sm font-bold text-[#0F172A]/80">
+                      <div className="w-2 h-2 rounded-full bg-[#F97316]"></div>
                       {doc}
                     </li>
                   ))}
@@ -129,12 +146,16 @@ export default function AskPage() {
               </div>
             </div>
 
-            <div className="bg-[#FAFAF9] rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4 mt-8">
+            <div className="bg-[#FAFAF9] rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4 mt-8 border border-[#0F172A]/5">
               <div>
-                <p className="text-sm text-[#0F172A]/50 font-medium">Next Action</p>
-                <p className="font-bold text-[#0F172A] capitalize text-lg">{result.nextStep.replace('_', ' ')}</p>
+                <p className="text-sm font-bold text-[#0F172A]/40 uppercase tracking-widest">Next Step</p>
+                <p className="font-extrabold text-[#0F172A] capitalize text-xl mt-1">{
+                  result.nextStep === 'eligibility' ? 'Check your eligibility' : 
+                  result.nextStep === 'documents' ? 'Upload your damage evidence' :
+                  'Review grievance draft'
+                }</p>
               </div>
-              <button onClick={handleNext} className="w-full sm:w-auto px-8 py-3 bg-[#15803D] text-white font-bold rounded-xl hover:bg-green-700 transition-colors shadow-md">
+              <button onClick={handleNext} className="w-full sm:w-auto px-10 py-4 bg-[#15803D] text-white font-bold rounded-xl hover:bg-green-700 transition-colors shadow-lg">
                 Continue →
               </button>
             </div>
@@ -142,5 +163,13 @@ export default function AskPage() {
         )}
       </AnimatePresence>
     </div>
+  );
+}
+
+export default function AskPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center py-20 font-bold">Loading...</div>}>
+      <AskContent />
+    </Suspense>
   );
 }

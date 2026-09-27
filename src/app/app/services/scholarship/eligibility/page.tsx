@@ -22,15 +22,37 @@ export default function ScholarshipEligibility() {
     return (
       <div className="max-w-3xl mx-auto px-4 py-8">
         <SevaSetuFlow activeStep={2} />
-        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="mt-12 bg-white rounded-3xl p-8 text-center shadow-xl border border-green-100">
-          <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
-            <CheckCircle2 className="w-10 h-10" />
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="mt-12 bg-white rounded-3xl p-8 shadow-xl border border-[#0F172A]/5 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-green-50 rounded-bl-full -z-10 opacity-50"></div>
+          
+          <p className="text-xs font-bold text-green-700 uppercase tracking-wider mb-4 bg-green-100 inline-block px-3 py-1 rounded-full">Eligibility Pre-Check</p>
+          <h2 className="text-3xl font-extrabold text-[#0F172A] mb-4">Potentially Eligible</h2>
+          
+          <div className="bg-[#FAFAF9] p-6 rounded-2xl border border-[#0F172A]/5 mb-6">
+            <p className="text-sm font-bold text-[#0F172A]/50 uppercase tracking-widest mb-4">Based on the information provided:</p>
+            <ul className="space-y-3">
+              <li className="flex items-center gap-3 text-sm font-bold text-[#0F172A]"><CheckCircle2 className="w-5 h-5 text-green-600" /> Student profile matches criteria</li>
+              <li className="flex items-center gap-3 text-sm font-bold text-[#0F172A]"><CheckCircle2 className="w-5 h-5 text-green-600" /> Course information verified</li>
+              <li className="flex items-center gap-3 text-sm font-bold text-[#0F172A]"><CheckCircle2 className="w-5 h-5 text-green-600" /> Required document availability confirmed</li>
+            </ul>
           </div>
-          <h2 className="text-2xl font-bold text-[#0F172A] mb-2">Likely Eligible</h2>
-          <p className="text-[#0F172A]/60 mb-8 max-w-lg mx-auto">Based on the information provided, you appear to be eligible for the Post-Matric Scholarship. Official verification will occur upon submission.</p>
-          <button onClick={() => router.push('/app/documents')} className="px-8 py-4 bg-[#F97316] text-white font-bold rounded-full hover:bg-orange-600 transition-colors w-full sm:w-auto">
-            Proceed to Documents
-          </button>
+          
+          <div className="bg-yellow-50 p-4 rounded-xl flex items-start gap-3 border border-yellow-100 mb-8">
+            <AlertTriangle className="w-5 h-5 text-yellow-600 shrink-0 mt-0.5" />
+            <p className="text-xs font-bold text-yellow-800 leading-relaxed">
+              AI-ASSISTED PRELIMINARY CHECK: Official eligibility will depend on the relevant authority&apos;s verification after submission.
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-between bg-blue-50 p-6 rounded-2xl border border-blue-100 gap-4">
+            <div>
+              <p className="text-sm font-bold text-blue-900/50 uppercase tracking-widest">Next Step</p>
+              <p className="font-bold text-blue-900 mt-1">Upload required documents</p>
+            </div>
+            <button onClick={() => router.push('/app/documents')} className="w-full sm:w-auto px-8 py-4 bg-[#0F172A] text-white font-bold rounded-xl hover:bg-[#0F172A]/90 transition-colors shadow-lg">
+              Continue →
+            </button>
+          </div>
         </motion.div>
       </div>
     );
